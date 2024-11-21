@@ -21,9 +21,15 @@ const createUser = async (userData: CreateUserData) => {
 const loginUser = async (userData: LoginUserData) => {
     const user = await axios.post(`${BASE_URL}/user/login`, userData).then((response) => console.log(response.data));
     return user;
-}
+};
+
+const getUsersCount = async () => {
+  const usersCount = await axios.get(`${BASE_URL}/user/count`).then((response) => response.data);
+  return usersCount;
+};
 
 export const UserDaoService = {
     createUser,
-    loginUser
+    loginUser,
+    getUsersCount
 }

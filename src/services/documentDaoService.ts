@@ -1,9 +1,8 @@
-import axios from "axios";
-import {BASE_URL} from "../constants/urls";
+import api from "../constants/axiosInterceptor";
 
 
 const getDocument = async () =>{
-    const file = await axios.get(`${BASE_URL}/document`, { responseType: 'blob' }).then((response) => response.data);
+    const file = await api.get(`/document`, { responseType: 'blob' }).then((response) => response.data);
     return file;
 }
 

@@ -4,16 +4,16 @@ import '../styles/createUser.css'
 import {FormInputComponent} from "../components/FormInputComponent";
 import {UserDaoService} from "../services/userDaoService";
 import {UserType} from "../constants/userConsts";
+import {useDispatch} from "react-redux";
+import {loginUser} from "../redux/userSlice";
 
 export const LoginUser = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const loginUser = async () => {
-        const userData = await UserDaoService.loginUser({
-            email: login,
-            password: password,
-        }).catch(err => setError('This user is exist'));
+    const dispatch = useDispatch();
+    const OnloginUser = async () => {
+        await dispatch(loginUser({email: login, password})as any);
     }
     return (<>
         <div className="login-main">
@@ -26,7 +26,7 @@ export const LoginUser = () => {
                 <FormInputComponent placeholder={'Password'} value={password} setValue={setPassword} type={'password'}/>
                 <div className={'login-main-form-button'}>
                     <Button className={'login-main-form-button-login'} color={'success'} variant={'solid'}
-                            onClick={() => loginUser()}>Login</Button>
+                            onClick={() => OnloginUser()}>Login</Button>
                     <p className='error'>{error}</p>
                     <span>Not remember yet <a href={'/register'}>Register!</a></span>
                 </div>

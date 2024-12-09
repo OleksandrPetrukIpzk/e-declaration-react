@@ -1,5 +1,5 @@
-import axios from "axios";
-import {BASE_URL} from "../constants/urls";
+import api from "../constants/axiosInterceptor";
+
 
 type CreateUserData = {
     firstName: string;
@@ -14,22 +14,29 @@ type LoginUserData = {
 }
 
 const createUser = async (userData: CreateUserData) => {
-    const user = await axios.post(`${BASE_URL}/user/create`, userData).then((response) => console.log(response.data));
+    const user = await api.post(`/user/create`, userData).then((response) => console.log(response.data));
     return user;
 }
 
 const loginUser = async (userData: LoginUserData) => {
-    const user = await axios.post(`${BASE_URL}/user/login`, userData).then((response) => console.log(response.data));
+    const user = await api.post(`/user/login`, userData).then((response) => console.log(response.data));
     return user;
 };
 
 const getUsersCount = async () => {
-  const usersCount = await axios.get(`${BASE_URL}/user/count`).then((response) => response.data);
+  const usersCount = await api.get(`/user/count`).then((response) => response.data);
   return usersCount;
+};
+
+const getUserInfo = async (id: number) => {
+    const user = await api.post(`/user/info`, { userId: id }) // Надсилаємо об'єкт з полем userId
+        .then((response) => response.data)
+        .catch((error) => error);
 };
 
 export const UserDaoService = {
     createUser,
     loginUser,
-    getUsersCount
+    getUsersCount,
+    getUserInfo
 }

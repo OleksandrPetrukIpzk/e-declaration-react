@@ -2,8 +2,6 @@ import {useState} from "react";
 import {Button} from "@mui/joy";
 import '../styles/createUser.css'
 import {FormInputComponent} from "../components/FormInputComponent";
-import {UserDaoService} from "../services/userDaoService";
-import {UserType} from "../constants/userConsts";
 import {useDispatch} from "react-redux";
 import {loginUser} from "../redux/userSlice";
 

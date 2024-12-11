@@ -28,15 +28,9 @@ const getUsersCount = async () => {
   return usersCount;
 };
 
-const getUserInfo = async (id: number) => {
-    const user = await api.post(`/user/info`, { userId: id }) // Надсилаємо об'єкт з полем userId
-        .then((response) => response.data)
-        .catch((error) => error);
-};
 
 export const UserDaoService = {
     createUser,
     loginUser,
     getUsersCount,
-    getUserInfo
 }

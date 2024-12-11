@@ -36,6 +36,7 @@
     "react-signature-pad-wrapper": "^4.0.4",
     "react-svg-to-image": "^3.0.0",
     "react-webcam": "^7.2.0",
+    "redux-persist": "^6.0.0",
     "styled-components": "^6.1.13",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"

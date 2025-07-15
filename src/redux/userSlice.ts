@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import api from "../constants/axiosInterceptor";
 import {AxiosError} from "axios";
-import {UserType} from "../constants/userTypes";
+import {UserType} from "../types/userTypes";
+import {useNavigate} from "react-router-dom";
 
 interface AuthState {
     user: UserType | null;
@@ -22,7 +23,6 @@ export const loginUser = createAsyncThunk('auth/login', async (credentials: {ema
 
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-
         return { accessToken, refreshToken, user };
     } catch (error) {
         if (error instanceof AxiosError && error.response) {

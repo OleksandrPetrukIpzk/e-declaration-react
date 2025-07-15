@@ -1,9 +1,11 @@
 import {Button,} from "@mui/joy";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ChooseYourRoleComponent} from "../features/ChooseYourRoleComponent";
 import {FormInputComponent} from "../components/FormInputComponent";
 import {UserDaoService} from "../services/userDaoService";
 import {UserType} from "../constants/userConsts";
+import {useNavigate} from "react-router-dom";
+import {useUserData} from "../hooks/useUserData";
 
 export const CreateUser = () => {
     const [login, setLogin] = useState<string>('');
@@ -11,14 +13,21 @@ export const CreateUser = () => {
     const [password, setPassword] = useState<string>('');
     const [selectedValue, setSelectedValue] = useState<keyof typeof UserType>('Individual');
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate();
+    const {user} = useUserData();
     const createUser = async () => {
        const userData = await UserDaoService.createUser({
             firstName: login,
             email: email,
             password: password,
             role: UserType[selectedValue],
-        }).catch(err => setError('This user is exist'));
+        }).then(() => navigate('/home')).catch(err => setError('This user is exist'));
     }
+    useEffect(() => {
+        if(user){
+            navigate('/home');
+        }
+    },[])
     return (<>
         <div className="login-main">
             <div className="login-main-text">

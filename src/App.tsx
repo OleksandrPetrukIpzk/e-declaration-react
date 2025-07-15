@@ -4,6 +4,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginUser} from "./sceens/LoginUser";
 import {CreateUser} from "./sceens/CreateUser";
 import {LandingScreen} from "./sceens/LandingScreen";
+import {MainPage} from "./sceens/MainPage";
 
 function App() {
 
@@ -23,6 +24,10 @@ function App() {
     {
       path: "/signDocument",
       element: <CreateDocument />,
+    },
+    {
+      path: "/home",
+      element: <MainPage />
     }
   ]);
 

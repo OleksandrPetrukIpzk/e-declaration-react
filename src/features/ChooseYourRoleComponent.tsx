@@ -1,5 +1,5 @@
 import {List, ListItem, ListItemDecorator, Radio, RadioGroup} from "@mui/joy";
-import {People, Person} from "@mui/icons-material";
+import {House, People, Person} from "@mui/icons-material";
 import {Dispatch, SetStateAction} from "react";
 import {UserType} from "../constants/userConsts";
 
@@ -22,10 +22,10 @@ export const ChooseYourRoleComponent = ({selectedValue, setSelectedValue}: Choos
                 color: 'white'
             }}
         >
-            {['Individual', 'Hospital',].map((item, index) => (
+            {['Individual', 'Hospital', 'Admin'].map((item, index) => (
                 <ListItem variant="outlined" key={item} sx={{boxShadow: 'sm'}}>
                     <ListItemDecorator sx={{color: 'white'}}>
-                        {[<Person/>, <People/>][index]}
+                        {[<Person/>, <People/>, <House />][index]}
                     </ListItemDecorator>
                     <Radio
                         overlay

@@ -1,18 +1,31 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button} from "@mui/joy";
 import '../styles/createUser.css'
 import {FormInputComponent} from "../components/FormInputComponent";
 import {useDispatch} from "react-redux";
 import {loginUser} from "../redux/userSlice";
+import {useNavigate} from "react-router-dom";
+import {useUserData} from "../hooks/useUserData";
 
 export const LoginUser = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
     const dispatch = useDispatch();
-    const OnloginUser = async () => {
-        await dispatch(loginUser({email: login, password})as any);
+    const navigate = useNavigate();
+    const {user} = useUserData();
+    const OnLoginUser = async () => {
+       const response = await dispatch(loginUser({email: login, password})as any);
+       if(response.payload.user){
+           navigate('/home');
+       }
+
     }
+    useEffect(() => {
+        if(user){
+            navigate('/home');
+        }
+    },[])
     return (<>
         <div className="login-main">
             <div className="login-main-text">
@@ -24,7 +37,7 @@ export const LoginUser = () => {
                 <FormInputComponent placeholder={'Password'} value={password} setValue={setPassword} type={'password'}/>
                 <div className={'login-main-form-button'}>
                     <Button className={'login-main-form-button-login'} color={'success'} variant={'solid'}
-                            onClick={() => OnloginUser()}>Login</Button>
+                            onClick={() => OnLoginUser()}>Login</Button>
                     <p className='error'>{error}</p>
                     <span>Not remember yet <a href={'/register'}>Register!</a></span>
                 </div>

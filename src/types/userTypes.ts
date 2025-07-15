@@ -1,3 +1,5 @@
+import {ClinicType} from "./clinic.types";
+
 export type UserType = {
     id: number;
 
@@ -15,11 +17,15 @@ export type UserType = {
 
     region?: string | null;
 
-    company?: string | null;
+    clinic?: ClinicType | null;
 
     role: number | null;
 
     profession?: string | null;
+
+    isAdmin: boolean;
+
+    connection: UserType[] | null;
 
     password: string;
 

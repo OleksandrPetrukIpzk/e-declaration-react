@@ -1,4 +1,5 @@
 import api from "../constants/axiosInterceptor";
+import {UserFormData, UserType} from "../types/userTypes";
 
 
 type CreateUserData = {
@@ -44,17 +45,23 @@ const getAllAdminList = async () => {
 
 const getAllProviderList = async () => {
     const providerList = await api.get(`/user/provider-list`).then((response) => response.data);
+    console.log(providerList);
     return providerList;
 }
 
 const getActiveProviderList = async () => {
-    const providerList = await api.get(`/user/provider-active-list`).then((response) => response.data);
+    const providerList: UserType[] | null = await api.get(`/user/provider-active-list`).then((response) => response.data);
     return providerList;
 }
 
 const getActiveAdminList = async () => {
     const adminList = await api.get(`/user/admin-active-list`).then((response) => response.data);
     return adminList;
+}
+
+const handleEditProfile = async (userId: number, userData: UserFormData) => {
+    const response = await api.patch(`/user/${userId}`, userData);
+    return response;
 }
 
 
@@ -67,5 +74,6 @@ export const UserDaoService = {
     getAllAdminList,
     getAllProviderList,
     getActiveProviderList,
-    getActiveAdminList
+    getActiveAdminList,
+    handleEditProfile
 }

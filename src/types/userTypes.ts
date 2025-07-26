@@ -23,12 +23,23 @@ export type UserType = {
 
     profession?: string | null;
 
-    isAdmin: boolean;
+    isActive: boolean;
 
     connection: UserType[] | null;
 
     password: string;
 
     refreshToken: string;
-
 }
+
+export type UserFormData = {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: number;
+    bio?: string;
+    address?: string;
+    region?: string;
+    profession?: string;
+    isActive?: boolean;
+};

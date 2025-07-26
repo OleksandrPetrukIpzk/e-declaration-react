@@ -1,8 +1,7 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import api from "../constants/axiosInterceptor";
 import {AxiosError} from "axios";
 import {UserType} from "../types/userTypes";
-import {useNavigate} from "react-router-dom";
 
 interface AuthState {
     user: UserType | null;
@@ -38,7 +37,6 @@ export const refreshAccessToken = createAsyncThunk('auth/refreshToken', async (_
         console.log('refresh');
         const response = await api.post('/user/refresh', { refreshToken });
         const { accessToken } = response.data;
-
         // Оновлюємо токен
         localStorage.setItem('accessToken', accessToken);
         return { accessToken };
@@ -60,6 +58,9 @@ const authSlice = createSlice({
         error: null,
     } as AuthState,
     reducers: {
+        setUser: (state, action: PayloadAction<UserType>) => {
+            state.user = action.payload;
+        },
         logout: (state) => {
             state.user = null;
             state.accessToken = null;
@@ -90,5 +91,5 @@ const authSlice = createSlice({
     },
 })
 
-export const { logout } = authSlice.actions;
+export const { logout, setUser } = authSlice.actions;
 export default authSlice.reducer;

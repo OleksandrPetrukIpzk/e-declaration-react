@@ -5,6 +5,11 @@ import {LoginUser} from "./sceens/LoginUser";
 import {CreateUser} from "./sceens/CreateUser";
 import {LandingScreen} from "./sceens/LandingScreen";
 import {MainPage} from "./sceens/MainPage";
+import {ActiveProviderList} from "./sceens/ActiveProviderList";
+import {EditProfile} from "./sceens/EditProfile";
+import {AllProvidersList} from "./sceens/AllProvidersList";
+import {ActiveAdminsList} from "./sceens/ActiveAdminsList";
+import {AllAdminsList} from "./sceens/AllAdminsList";
 
 function App() {
 
@@ -28,7 +33,27 @@ function App() {
     {
       path: "/home",
       element: <MainPage />
-    }
+    },
+    {
+      path: "/select-providers",
+      element: <ActiveProviderList />,
+    },
+    {
+      path: "/edit-profile",
+      element: <EditProfile />,
+    },
+    {
+      path: "/all-providers",
+      element: <AllProvidersList />,
+    },
+    {
+      path: "/active-admins",
+      element: <ActiveAdminsList/>,
+    },
+    {
+      path: "/all-admins",
+      element: <AllAdminsList/>,
+    },
   ]);
 
   return (

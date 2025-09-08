@@ -29,7 +29,6 @@ export const AllProvidersList = () => {
                             <Typography>Full name: {item.firstName} {item.lastName}</Typography>
                             <Typography>Email: {item.email}</Typography>
                             <Typography>Phone number: {item.phone}</Typography>
-                            <Typography>Last worked clinic: {item.clinic?.clinicName}</Typography>
                             <Typography>Specialization: {item.profession}</Typography>
                             <Typography>Region: {item.region}</Typography>
                             <Typography>Address: {item.address}</Typography>

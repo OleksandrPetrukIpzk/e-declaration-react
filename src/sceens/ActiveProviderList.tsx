@@ -26,7 +26,6 @@ export const ActiveProviderList = () => {
                         <AvatarIcon firstName={item.firstName} lastName={item.lastName} size={60} />
                         <Stack>
                         <Typography>{item.firstName} {item.lastName}</Typography>
-                        <Typography>{item.clinic?.clinicName}</Typography>
                         <Typography>{item.profession}</Typography>
                             <Typography>{item.region}</Typography>
                             <Typography>{item.address}</Typography>

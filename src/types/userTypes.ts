@@ -17,7 +17,9 @@ export type UserType = {
 
     region?: string | null;
 
-    clinic?: ClinicType | null;
+    clinic?: ClinicType[] | null;
+
+    clinicWork?: ClinicType | null;
 
     role: number | null;
 

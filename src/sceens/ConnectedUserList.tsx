@@ -2,16 +2,16 @@ import {useEffect, useState} from "react";
 import {UserType} from "../types/userTypes";
 import {UserDaoService} from "../services/userDaoService";
 import {LandingScreenHeader} from "../components/LandingScreenHeader";
-import {Grid2, Typography} from "@mui/material";
-import {Stack} from "@mui/material";
+import {Grid2, Stack, Typography} from "@mui/material";
 import {AvatarIcon} from "../components/AvatarIcon";
 
-export const ActiveAdminsList = () => {
+
+export const ConnectedUserList = () => {
     const [usersList, setUsersList] = useState<UserType[] | null>(null);
 
     useEffect(() => {
         const handleFetchData = async () => {
-            const data = await UserDaoService.getActiveAdminList();
+            const data = await UserDaoService.connectedUsers();
             setUsersList(data);
         }
         handleFetchData();
@@ -35,4 +35,4 @@ export const ActiveAdminsList = () => {
             </Grid2>
         </>
     )
-}
+};

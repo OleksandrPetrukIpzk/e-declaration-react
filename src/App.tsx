@@ -10,6 +10,18 @@ import {EditProfile} from "./sceens/EditProfile";
 import {AllProvidersList} from "./sceens/AllProvidersList";
 import {ActiveAdminsList} from "./sceens/ActiveAdminsList";
 import {AllAdminsList} from "./sceens/AllAdminsList";
+import {CreateClinicForm} from "./sceens/CreateClinicForm";
+import {MyClinicList} from "./sceens/MyClinicList";
+import {EditClinicForm} from "./sceens/EditClinicForm";
+import {ActiveClinicList} from "./sceens/ActiveClinicList";
+import {ClinicInvites} from "./sceens/ClinicInvites";
+import ExportToExelComponent from "./sceens/CSVToExcel";
+import PatientDashboard from "./sceens/PatientDashboard";
+import DivisionForm from "./sceens/DivisionForm";
+import DivisionManagement from "./sceens/DivisionManagement";
+import LegalEntityManager from "./sceens/LegalEntityManager";
+import DoctorDashboardWithState from "./sceens/DoctorDashboard";
+import {ConnectedUserList} from "./sceens/ConnectedUserList";
 
 function App() {
 
@@ -54,6 +66,54 @@ function App() {
       path: "/all-admins",
       element: <AllAdminsList/>,
     },
+    {
+      path: "/create-clinic",
+      element: <CreateClinicForm/>,
+    },
+    {
+      path: '/my-clinic-list',
+      element: <MyClinicList />,
+    },
+    {
+      path: '/edit-clinic/:id',
+      element: <EditClinicForm />,
+    },
+    {
+      path: "/active-clinic-list",
+      element: <ActiveClinicList />
+    },
+    {
+      path: '/invite-clinic/:id',
+      element: <ClinicInvites />,
+    },
+    {
+      path: "/export",
+      element: <ExportToExelComponent />,
+    },
+    {
+      path: "/patient-create-declaration",
+      element: <PatientDashboard />
+    },
+    {
+      path: "/doctor-dashboard",
+      element: <DoctorDashboardWithState />
+    },
+    {
+      path: "/division-management",
+      element: <DivisionManagement />
+    },
+    {
+      path: "/legal-entity-management",
+      element: <LegalEntityManager />
+    },
+    {
+      path: "/connected-users",
+      element: <ConnectedUserList />
+    }
+    // {
+    //   path: "/test",
+    //   element: <TestPage />,
+    // }
   ]);
 
   return (

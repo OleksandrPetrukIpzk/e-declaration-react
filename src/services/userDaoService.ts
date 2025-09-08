@@ -64,6 +64,11 @@ const handleEditProfile = async (userId: number, userData: UserFormData) => {
     return response;
 }
 
+const connectedUsers = async () => {
+    const usersList = await api.get(`/user/connected-users`).then((response) => response.data);
+    return usersList;
+}
+
 
 export const UserDaoService = {
     createUser,
@@ -75,5 +80,6 @@ export const UserDaoService = {
     getAllProviderList,
     getActiveProviderList,
     getActiveAdminList,
-    handleEditProfile
+    handleEditProfile,
+    connectedUsers
 }

@@ -27,7 +27,7 @@ export type UserType = {
 
     isActive: boolean;
 
-    connection: UserType[] | null;
+    connections: UserType[] | null;
 
     password: string;
 

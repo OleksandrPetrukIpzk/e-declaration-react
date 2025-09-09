@@ -22,6 +22,7 @@ import DivisionManagement from "./sceens/DivisionManagement";
 import LegalEntityManager from "./sceens/LegalEntityManager";
 import DoctorDashboardWithState from "./sceens/DoctorDashboard";
 import {ConnectedUserList} from "./sceens/ConnectedUserList";
+import {NotificationSystem} from "./sceens/NotificationSystem";
 
 function App() {
 
@@ -109,6 +110,10 @@ function App() {
     {
       path: "/connected-users",
       element: <ConnectedUserList />
+    },
+    {
+      path: '/notifications',
+      element: <NotificationSystem />,
     }
     // {
     //   path: "/test",

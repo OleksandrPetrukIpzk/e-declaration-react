@@ -37,7 +37,6 @@ export const refreshAccessToken = createAsyncThunk('auth/refreshToken', async (_
         console.log('refresh');
         const response = await api.post('/user/refresh', { refreshToken });
         const { accessToken } = response.data;
-        // Оновлюємо токен
         localStorage.setItem('accessToken', accessToken);
         return { accessToken };
     } catch (error) {

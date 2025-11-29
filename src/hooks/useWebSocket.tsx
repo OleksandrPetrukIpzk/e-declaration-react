@@ -8,10 +8,9 @@ export function useWebSocket(userId: number) {
 
     const connect = () => {
         if (!socketRef.current) {
-            // Використовуйте ваш актуальний порт (3005 за помилкою)
             socketRef.current = io(BASE_URL, {
                 query: { userId },
-                transports: ['websocket', 'polling'], // Додати fallback на polling
+                transports: ['websocket', 'polling'],
                 autoConnect: true,
                 reconnection: true,
                 reconnectionAttempts: 5,

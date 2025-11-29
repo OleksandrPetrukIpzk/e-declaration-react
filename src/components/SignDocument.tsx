@@ -15,11 +15,9 @@ export const SignDocument = ({setPdfFile, setIsUserSigned, isUserSigned}: {setPd
         const svgelm = canvasRef.current?.svg?.cloneNode(true) as SVGSVGElement;
         const svgData = new XMLSerializer().serializeToString(svgelm);
 
-        // Створіть Blob зі SVG
         const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
         const url = URL.createObjectURL(svgBlob);
 
-        // Завантажте зображення з URL-адреси
         const img = new Image();
         img.src = url;
 
@@ -30,17 +28,14 @@ export const SignDocument = ({setPdfFile, setIsUserSigned, isUserSigned}: {setPd
             const ctx = canvas.getContext("2d");
             if (ctx) ctx.drawImage(img, 0, 0, 100, 60);
 
-            // Використовуйте Promise для `canvas.toBlob`
             canvas.toBlob(async (blob) => {
                 if (!blob) {
                     console.error("Failed to create blob");
                     return;
                 }
 
-                // Збережіть URL PNG-зображення у змінній стану
                 const pngUrl = URL.createObjectURL(blob);
 
-                // Завантажте байти зображення у форматі PNG
                 const imageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer());
                 await subscribeDocument(imageBytes, setPdfFile, 250, 445);
             }, "image/png");

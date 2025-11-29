@@ -18,8 +18,8 @@ export const HeaderUserInfo = () =>{
     const userLinksList: Record<UserType, { name: string; link: string }[]> = {
         [UserType.Individual]: [
             {
-                name: 'Домашня сторінка',
-                link: '/home'
+                name: 'Мої декларації',
+                link: '/patient-declarations'
             },
             {
                 name: 'Створити декларацію',
@@ -30,20 +30,21 @@ export const HeaderUserInfo = () =>{
                 link: '/select-providers'
             },
             {
-                name: 'Список привязаних користувачів',
+                name: 'Мій лікар',
                 link: '/connected-users'
             }
         ],
-        [UserType.Admin]: [{
-            name: 'Домашня сторінка',
-            link: '/home'
-        },
+        [UserType.Admin]: [
             {
-                name: 'Legal entity',
+                name: 'Список клінік',
+                link: '/active-clinic-list',
+            },
+            {
+                name: 'Юридичні особи',
                 link: '/legal-entity-management'
             },
             {
-                name: 'Divisions',
+                name: 'Підрозділи',
                 link: '/division-management'
             },
             {
@@ -62,12 +63,12 @@ export const HeaderUserInfo = () =>{
                 name: 'Експорт',
                 link: '/export'
             },
+            {
+                name: 'Аналітика',
+                link: '/analytics'
+            },
         ],
         [UserType.Hospital]: [
-            {
-                name: 'Домашня сторінка',
-                link: '/home'
-            },
             {
             name: 'Список декларацій',
             link: '/doctor-dashboard'
@@ -95,6 +96,6 @@ export const HeaderUserInfo = () =>{
             <HeaderNotificationIndicator userId={user?.id ?? 0} />
         </Stack>
             <Typography sx={{cursor: 'pointer'}} onClick={() => navigate('/edit-profile')}>{user?.firstName ? user?.firstName : UserType[user?.role ? user?.role : 0]}</Typography>
-            <Button variant={'contained'} onClick={() => handleLogoutUser()}>Logout</Button>
+            <Button variant={'contained'} onClick={() => handleLogoutUser()}>Вийти</Button>
         </Stack>);
 }

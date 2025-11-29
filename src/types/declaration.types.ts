@@ -1,4 +1,3 @@
-// Базові типи
 type Gender = 'male' | 'female';
 type PhoneType = 'mobile' | 'landline' | 'work';
 type DocumentType = 'PASSPORT' | 'BIRTH_CERTIFICATE' | 'NATIONAL_ID';
@@ -21,7 +20,6 @@ type QualificationTypeEnum = 'AWARDING' | 'CONFIRMATION' | 'IMPROVEMENT';
 type AuthMethodType = 'OTP' | 'BANK_ID' | 'MOBILE_ID';
 type PreferredCommunication = 'phone' | 'email' | 'sms';
 
-// Інтерфейси для вкладених об'єктів
 interface Phone {
     type: PhoneType;
     number: string;
@@ -201,7 +199,6 @@ interface Urgent {
     authentication_method_current: AuthenticationMethod;
 }
 
-// Головний інтерфейс декларації
 interface ElectronicDeclaration {
     id: string;
     declaration_number: string;

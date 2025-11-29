@@ -1,4 +1,3 @@
-// types.ts
 export enum DivisionType {
     CLINIC = 'clinic',
     HOSPITAL = 'hospital',

@@ -19,14 +19,12 @@ import {
     Notifications as NotificationsIcon,
     NotificationsActive as NotificationsActiveIcon,
     MarkEmailRead as ReadIcon,
-    Refresh as RefreshIcon,
     NotificationsOff as NotificationsOffIcon
 } from '@mui/icons-material';
 import io from 'socket.io-client';
 import api from '../../constants/axiosInterceptor';
 import {useNavigate} from "react-router-dom";
 
-// Типи
 interface Notification {
     id: number;
     sender: { firstName?: string; lastName?: string; email: string };
@@ -47,7 +45,6 @@ interface NotificationIndicatorProps {
     onViewAllClick?: () => void;
 }
 
-// API сервіс
 const notificationAPI = {
     async getUnreadCount() {
         const response = await api.get('/notifications/unread');
@@ -70,17 +67,15 @@ const notificationAPI = {
     }
 };
 
-// WebSocket Hook
 function useWebSocket(userId: number) {
     const socketRef = useRef<any>(null);
     const [isConnected, setIsConnected] = useState(false);
 
     const connect = () => {
         if (!socketRef.current) {
-            // Використовуйте ваш актуальний порт (3005 за помилкою)
             socketRef.current = io('http://localhost:3005', {
                 query: { userId },
-                transports: ['websocket', 'polling'], // Додати fallback на polling
+                transports: ['websocket', 'polling'],
                 autoConnect: true,
                 reconnection: true,
                 reconnectionAttempts: 5,
@@ -135,7 +130,6 @@ function useWebSocket(userId: number) {
     return { connect, disconnect, on, off, isConnected };
 }
 
-// Компонент превью нотифікацій
 function NotificationPreview({
                                  notifications,
                                  anchorEl,
@@ -253,7 +247,6 @@ function NotificationPreview({
 );
 }
 
-// Головний компонент індикатора
 export default function NotificationIndicator({
                                                   userId,
                                                   variant = 'icon',
@@ -274,7 +267,6 @@ export default function NotificationIndicator({
 
     const { connect, disconnect, on, off, isConnected } = useWebSocket(userId);
 
-    // Завантажити початкові дані
     useEffect(() => {
         loadUnreadCount();
         loadRecentNotifications();
@@ -285,7 +277,6 @@ export default function NotificationIndicator({
         };
     }, [userId]);
 
-    // WebSocket слухачі
     useEffect(() => {
         if (isConnected) {
             on('new_notification', (notification: Notification) => {
@@ -384,7 +375,6 @@ export default function NotificationIndicator({
         return positions[position];
     };
 
-    // Рендер різних варіантів компонента
     const renderIndicator = () => {
         const badge = (
             <Badge
@@ -487,9 +477,6 @@ export default function NotificationIndicator({
         </>
 );
 }
-
-// Додаткові компоненти для зручності використання
-
 
 export function HeaderNotificationIndicator({ userId, onViewAllClick }: {
     userId: number;

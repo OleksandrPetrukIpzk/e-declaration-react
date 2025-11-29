@@ -15,18 +15,10 @@ import {
     IconButton,
     Card,
     CardContent,
-    Divider,
     CircularProgress,
     FormHelperText,
-    SelectChangeEvent,
-    ButtonGroup,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions
 } from '@mui/material';
 import {
-    CloudUpload,
     Add,
     Delete,
     Download,
@@ -34,13 +26,10 @@ import {
     CheckCircle,
     Error as ErrorIcon
 } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 import {CustomField, EntityFieldsState, EntityType } from '../types/export.types';
 import {ENTITY_CONFIGS} from "../constants/exportConstants";
 import {EntitySelector} from "../components/exportToExcel/EntitySelector";
 import {DropZoneInput} from "../components/exportToExcel/DropZone";
-
-
 
 const ExportToExcelComponent: React.FC = () => {
     const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -89,8 +78,6 @@ const ExportToExcelComponent: React.FC = () => {
             }
         }));
     };
-
-    // Функции для кастомных полей
     const addCustomField = () => {
         setCustomFields([...customFields, { columnName: '', fieldPaths: '' }]);
     };
@@ -339,7 +326,6 @@ const ExportToExcelComponent: React.FC = () => {
                             )}
                         </Box>
                     ) : (
-                        // Кастомные поля
                         <Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                 <Typography variant="h6">

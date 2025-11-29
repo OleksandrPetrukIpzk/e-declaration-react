@@ -29,17 +29,17 @@ export const LoginUser = () => {
     return (<>
         <div className="login-main">
             <div className="login-main-text">
-        <h1>Login</h1>
-        <h2>Please enter your Email and your Password</h2>
+        <h1>Вхід</h1>
+        <h2>Будь ласка, введіть ваш Email та Пароль</h2>
             </div>
             <div className="login-main-form">
-                <FormInputComponent placeholder={'Email'} value={login} setValue={setLogin} type={'email'}/>
-                <FormInputComponent placeholder={'Password'} value={password} setValue={setPassword} type={'password'}/>
+                <FormInputComponent placeholder={'Пошта'} value={login} setValue={setLogin} type={'email'}/>
+                <FormInputComponent placeholder={'Пароль'} value={password} setValue={setPassword} type={'password'}/>
                 <div className={'login-main-form-button'}>
                     <Button className={'login-main-form-button-login'} color={'success'} variant={'solid'}
-                            onClick={() => OnLoginUser()}>Login</Button>
+                            onClick={() => OnLoginUser()}>Вхід</Button>
                     <p className='error'>{error}</p>
-                    <span>Not remember yet <a href={'/register'}>Register!</a></span>
+                    <span>Ще не маєте акаунту? <a href={'/register'}>Зареєструватися!</a></span>
                 </div>
             </div>
         </div>

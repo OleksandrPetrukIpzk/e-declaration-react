@@ -10,7 +10,7 @@ export interface EntityConfig {
     optional: FieldConfig[];
 }
 
-export type EntityType = 'user' | 'user_clinic_relations' | 'user_connections' | 'clinic' | 'custom';
+export type EntityType = 'user' | 'user_clinic_relations' | 'user_connections' | 'clinic' | 'declaration' | 'legal_entity' | 'division' | 'custom';
 
 export interface EntityFieldState {
     active: boolean;

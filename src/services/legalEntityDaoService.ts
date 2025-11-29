@@ -1,8 +1,5 @@
-// API сервіс для роботи з юридичними особами
-import { AxiosResponse } from 'axios';
 import api from '../constants/axiosInterceptor';
 
-// Типи даних
 interface Phone {
     type: string;
     number: string;
@@ -55,7 +52,6 @@ interface ApiError {
     error?: string;
 }
 
-// Експортуємо типи для використання в компонентах
 export type {
     LegalEntity,
     LegalEntityFormData,
@@ -65,7 +61,6 @@ export type {
     ApiError
 };
 
-// Константи для використання в UI
 export const PHONE_TYPES = [
     { value: 'MOBILE', label: 'Мобільний' },
     { value: 'LAND_LINE', label: 'Стаціонарний' },
@@ -98,22 +93,17 @@ export const STREET_TYPES = [
     'вул.', 'пр.', 'бул.', 'пров.', 'площа', 'наб.'
 ] as const;
 
-// Утилітарні функції
 export const formatPhoneNumber = (phone: string): string => {
-    // Очищуємо номер від всього крім цифр
     const cleaned = phone.replace(/\D/g, '');
-
-    // Форматуємо українські номери
     if (cleaned.startsWith('380') && cleaned.length === 12) {
         return `+${cleaned.slice(0, 3)} (${cleaned.slice(3, 5)}) ${cleaned.slice(5, 8)}-${cleaned.slice(8, 10)}-${cleaned.slice(10)}`;
     }
 
-    // Якщо починається з 0 і має 10 цифр
     if (cleaned.startsWith('0') && cleaned.length === 10) {
         return `+380 (${cleaned.slice(1, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 8)}-${cleaned.slice(8)}`;
     }
 
-    return phone; // Повертаємо оригінальний формат якщо не вдалося розпарсити
+    return phone;
 };
 
 export const validateEdrpou = (edrpou: string): boolean => {
@@ -198,7 +188,7 @@ export const formatFullAddress = (address: Address): string => {
             const entity = await getByEdrpou(edrpou);
             return excludeId ? entity.id !== excludeId : true;
         } catch {
-            return false; // не знайшли — ЄДРПОУ вільний
+            return false;
         }
     };
 

@@ -11,7 +11,6 @@ import {
     Select,
     MenuItem,
     IconButton,
-    Divider,
     Alert,
     CircularProgress,
     Accordion,
@@ -30,7 +29,6 @@ import {
 } from '@mui/icons-material';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 
-// Типи
 interface Phone {
     type: string;
     number: string;
@@ -160,7 +158,6 @@ const LegalEntityForm: React.FC<LegalEntityFormProps> = ({ entity, onSubmit, onC
         name: 'addresses'
     });
 
-    // Автозаповнення публічної назви
     const watchedName = watch('name');
     useEffect(() => {
         if (watchedName && !entity) {

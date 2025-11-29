@@ -34,7 +34,7 @@ const getUserInfo = async () => {
     return userInfo;
 }
 const connectUsers = async (userId: number) => {
-    const usersConnectMessage = await api.post(`/user/connect-users`, {otherUserId: userId}).then((response) => response.data)
+    const usersConnectMessage = await api.post(`/user/connect-users`, {userId}).then((response) => response.data)
     return usersConnectMessage;
 }
 

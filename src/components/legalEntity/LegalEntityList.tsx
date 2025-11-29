@@ -41,7 +41,6 @@ import {
 import { useForm } from 'react-hook-form';
 import {legalEntityDaoService, LegalEntitySearchParams} from "../../services/legalEntityDaoService";
 
-// Типи для TypeScript
 interface Phone {
     type: string;
     number: string;
@@ -127,7 +126,6 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
         }
     });
 
-    // Завантаження даних
     const fetchEntities = async (searchParams?: SearchFormData) => {
         try {
             setLoading(true);
@@ -136,7 +134,6 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
             let data: LegalEntity[];
 
             if (searchParams && Object.values(searchParams).some(val => val)) {
-                // Фільтруємо порожні значення для пошуку
                 const filteredParams: LegalEntitySearchParams = {};
                 Object.entries(searchParams).forEach(([key, value]) => {
                     if (value) {
@@ -161,7 +158,6 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
         fetchEntities();
     }, []);
 
-    // Пошук
     const onSearch = (data: SearchFormData) => {
         fetchEntities(data);
     };
@@ -171,7 +167,6 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
         fetchEntities();
     };
 
-    // Видалення
     const handleDelete = async () => {
         if (!deleteDialog.entity) return;
 
@@ -191,7 +186,6 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
         }
     };
 
-    // Форматування дати
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('uk-UA', {
             year: 'numeric',
@@ -202,12 +196,10 @@ const LegalEntityList: React.FC<LegalEntityListProps> = ({ onEdit, onCreate, onV
         });
     };
 
-    // Форматування телефонів
     const formatPhones = (phones: Phone[]) => {
         return phones.map(phone => `${phone.type}: ${phone.number}`).join(', ');
     };
 
-    // Основна адреса
     const getPrimaryAddress = (addresses: Address[]) => {
         const primary = addresses.find(addr => addr.type === 'RESIDENCE') || addresses[0];
         if (!primary) return 'Не вказано';

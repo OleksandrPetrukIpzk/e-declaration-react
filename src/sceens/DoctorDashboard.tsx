@@ -10,11 +10,6 @@ import {
     Grid,
     Alert,
     Snackbar,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    FormHelperText,
     Divider,
     Card,
     CardContent,
@@ -37,30 +32,28 @@ import {
     Autocomplete,
 } from '@mui/material';
 import {
-    Assignment,
     CheckCircle,
     Cancel,
     Edit,
     Search,
     Phone,
-    Email,
     Person,
     Business,
     LocationOn,
     Add,
     Delete,
     Refresh,
+    Warning,
 } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { uk } from 'date-fns/locale';
 import { format } from 'date-fns';
 import api from "../constants/axiosInterceptor";
-import {UserDaoService} from "../services/userDaoService";
 import {LandingScreenHeader} from "../components/LandingScreenHeader";
-import {downloadDeclarationPdf, previewDeclarationPdf} from "../services/declarationDaoService";
+import {downloadDeclarationPdf} from "../services/declarationDaoService";
+import { isDeclarationExpired } from "../constants/declaration-color.constant";
 
-// Enums
 enum DeclarationStatus {
     PENDING_DOCTOR_REVIEW = 'pending_doctor_review',
     PENDING_DOCTOR_SIGN = 'pending_doctor_sign',
@@ -69,42 +62,48 @@ enum DeclarationStatus {
     REJECTED = 'rejected',
 }
 
-enum EmployeeType {
-    OWNER = 'owner',
-    EMPLOYEE = 'employee',
-}
-
 enum EmployeeStatus {
     ACTIVE = 'active',
     INACTIVE = 'inactive',
 }
 
-enum PhoneType {
-    mobile = 'mobile',
-    landline = 'landline',
-    work = 'work',
-}
 
-const StatusChip = ({ status }: any) => {
-    const getStatusConfig = (status: any) => {
+const StatusChip = ({ status, endDate }: any) => {
+    const expired = isDeclarationExpired(endDate, status);
+
+    const getStatusConfig = (status: any, expired: boolean) => {
+        if (expired) {
+            return { color: '#d32f2f', label: 'Прострочена' };
+        }
+
         switch (status) {
             case DeclarationStatus.PENDING_DOCTOR_REVIEW:
-                return { color: 'warning', label: 'На розгляді' };
+                return { color: '#ff9800', label: 'На розгляді' };
             case DeclarationStatus.PENDING_DOCTOR_SIGN:
-                return { color: 'info', label: 'До підписання' };
+                return { color: '#2196f3', label: 'До підписання' };
             case DeclarationStatus.ACTIVE:
-                return { color: 'success', label: 'Активна' };
+                return { color: '#4caf50', label: 'Активна' };
             case DeclarationStatus.TERMINATED:
-                return { color: 'warning', label: 'Завершена' };
+                return { color: '#ff9800', label: 'Завершена' };
             case DeclarationStatus.REJECTED:
-                return { color: 'error', label: 'Відхилена' };
+                return { color: '#f44336', label: 'Відхилена' };
             default:
-                return { color: 'warning', label: status };
+                return { color: '#757575', label: status };
         }
     };
 
-    const config = getStatusConfig(status);
-    return <Chip size="small" color={'success'} label={config.label} />;
+    const config = getStatusConfig(status, expired);
+    return (
+        <Chip
+            size="small"
+            label={config.label}
+            sx={{
+                backgroundColor: config.color,
+                color: 'white',
+                fontWeight: 'bold'
+            }}
+        />
+    );
 };
 
 const DoctorDashboard = () => {
@@ -121,7 +120,6 @@ const DoctorDashboard = () => {
     const [legalEntities, setLegalEntities] = useState<any>([]);
     const [submitStatus, setSubmitStatus] = useState({ open: false, type: 'success', message: '' });
 
-    // Form for completing declaration
     const {
         control,
         handleSubmit,
@@ -175,31 +173,15 @@ const DoctorDashboard = () => {
         }
     });
 
-    // Field arrays
     const { fields: educationFields, append: appendEducation, remove: removeEducation } = useFieldArray({
         control,
         name: "doctor_data.educations"
     });
 
-    // const { fields: qualificationFields, append: appendQualification, remove: removeQualification } = useFieldArray({
-    //     control,
-    //     name: "doctor_data.qualifications"
-    // });
-
     const { fields: specialityFields, append: appendSpeciality, remove: removeSpeciality } = useFieldArray({
         control,
         name: "doctor_data.specialities"
     });
-
-    // const { fields: phoneFields, append: appendPhone, remove: removePhone } = useFieldArray({
-    //     control,
-    //     name: "legal_entity_data.phones"
-    // });
-
-    // const { fields: addressFields, append: appendAddress, remove: removeAddress } = useFieldArray({
-    //     control,
-    //     name: "legal_entity_data.addresses"
-    // });
 
     const tabs = [
         { label: 'На розгляді', status: DeclarationStatus.PENDING_DOCTOR_REVIEW },
@@ -261,8 +243,7 @@ const DoctorDashboard = () => {
         setSelectedDeclaration(declaration);
         setCompleteDialogOpen(true);
 
-        // Pre-fill some fields
-        setValue('employee_data.party.first_name', ''); // Doctor should fill their own data
+        setValue('employee_data.party.first_name', '');
         setValue('employee_data.party.last_name', '');
         setValue('employee_data.party.second_name', '');
         setValue('employee_data.party.id', crypto.randomUUID());
@@ -310,7 +291,6 @@ const DoctorDashboard = () => {
                 `/declarations/doctor/${selectedDeclaration.id}/sign`,
                 { reason_description: 'Підписано' },
             );
-            await UserDaoService.connectUsers(selectedDeclaration.patient.id);
             setSubmitStatus({
                 open: true,
                 type: 'success',
@@ -477,27 +457,38 @@ const DoctorDashboard = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredDeclarations.map((declaration: any) => (
-                                <TableRow key={declaration.id}>
-                                    <TableCell>
-                                        <Box display="flex" alignItems="center">
-                                            <Person sx={{ mr: 1, color: 'text.secondary' }} />
-                                            {`${declaration.person_data.last_name} ${declaration.person_data.first_name} ${declaration.person_data.second_name}`}
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Box display="flex" alignItems="center">
-                                            <Phone sx={{ mr: 1, color: 'text.secondary' }} />
-                                            {declaration.person_data.phones?.[0]?.number || 'Не вказано'}
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        {format(new Date(declaration.inserted_at), 'dd.MM.yyyy HH:mm')}
-                                    </TableCell>
-                                    <TableCell>
-                                        <StatusChip status={declaration.status} />
-                                    </TableCell>
-                                    <TableCell>
+                            {filteredDeclarations.map((declaration: any) => {
+                                const expired = isDeclarationExpired(declaration.end_date, declaration.status);
+                                return (
+                                    <TableRow
+                                        key={declaration.id}
+                                        sx={{
+                                            ...(expired && {
+                                                backgroundColor: 'rgba(211, 47, 47, 0.04)',
+                                                borderLeft: '4px solid #d32f2f'
+                                            })
+                                        }}
+                                    >
+                                        <TableCell>
+                                            <Box display="flex" alignItems="center">
+                                                {expired && <Warning sx={{ mr: 1, color: '#d32f2f', fontSize: 20 }} />}
+                                                <Person sx={{ mr: 1, color: 'text.secondary' }} />
+                                                {`${declaration.person_data.last_name} ${declaration.person_data.first_name} ${declaration.person_data.second_name}`}
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" alignItems="center">
+                                                <Phone sx={{ mr: 1, color: 'text.secondary' }} />
+                                                {declaration.person_data.phones?.[0]?.number || 'Не вказано'}
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                            {format(new Date(declaration.inserted_at), 'dd.MM.yyyy HH:mm')}
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusChip status={declaration.status} endDate={declaration.end_date} />
+                                        </TableCell>
+                                        <TableCell>
                                         <Box display="flex" gap={1}>
                                             <Button
                                                 size="small"
@@ -562,9 +553,10 @@ const DoctorDashboard = () => {
                                                 </>
                                             )}
                                         </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
                             {filteredDeclarations.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={5} align="center">
@@ -930,6 +922,20 @@ const DoctorDashboard = () => {
                                                 </Grid>
                                                 <Grid item xs={12} md={6}>
                                                     <Controller
+                                                        name={`doctor_data.educations.${index.toString()}.city`}
+                                                        control={control}
+                                                        rules={{ required: "Місто обов'язкове" }}
+                                                        render={({ field }) => (
+                                                            <TextField
+                                                                {...field}
+                                                                label="Місто"
+                                                                fullWidth
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
                                                         name={`doctor_data.educations.${index.toString()}.speciality`}
                                                         control={control}
                                                         rules={{ required: "Спеціальність обов'язкова" }}
@@ -967,6 +973,29 @@ const DoctorDashboard = () => {
                                                                 label="Номер диплому"
                                                                 fullWidth
                                                             />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
+                                                        name={`doctor_data.educations.${index}.issued_date`}
+                                                        control={control}
+                                                        rules={{ required: "Дата видачі диплому обов'язкова" }}
+                                                        render={({ field }) => (
+                                                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={uk}>
+                                                                <DatePicker
+                                                                    {...field}
+                                                                    label="Дата видачі диплому"
+                                                                    format="dd.MM.yyyy"
+                                                                    slotProps={{
+                                                                        textField: {
+                                                                            fullWidth: true,
+                                                                        },
+                                                                    }}
+                                                                    value={field.value ? new Date(field.value) : null}
+                                                                    onChange={(date) => field.onChange(date)}
+                                                                />
+                                                            </LocalizationProvider>
                                                         )}
                                                     />
                                                 </Grid>
@@ -1030,6 +1059,48 @@ const DoctorDashboard = () => {
                                                 </Grid>
                                                 <Grid item xs={12} md={6}>
                                                     <Controller
+                                                        name={`doctor_data.specialities.${index}.level`}
+                                                        control={control}
+                                                        rules={{ required: "Рівень обов'язковий" }}
+                                                        render={({ field }) => (
+                                                            <TextField
+                                                                {...field}
+                                                                label="Рівень"
+                                                                fullWidth
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
+                                                        name={`doctor_data.specialities.${index}.qualification_type`}
+                                                        control={control}
+                                                        rules={{ required: "Тип кваліфікації обов'язковий" }}
+                                                        render={({ field }) => (
+                                                            <TextField
+                                                                {...field}
+                                                                label="Тип кваліфікації"
+                                                                fullWidth
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
+                                                        name={`doctor_data.specialities.${index}.attestation_name`}
+                                                        control={control}
+                                                        rules={{ required: "Назва атестації обов'язкова" }}
+                                                        render={({ field }) => (
+                                                            <TextField
+                                                                {...field}
+                                                                label="Назва атестації"
+                                                                fullWidth
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
                                                         name={`doctor_data.specialities.${index}.certificate_number`}
                                                         control={control}
                                                         rules={{ required: "Номер сертифікату обов'язковий" }}
@@ -1039,6 +1110,52 @@ const DoctorDashboard = () => {
                                                                 label="Номер сертифікату"
                                                                 fullWidth
                                                             />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
+                                                        name={`doctor_data.specialities.${index}.attestation_date`}
+                                                        control={control}
+                                                        rules={{ required: "Дата атестації обов'язкова" }}
+                                                        render={({ field }) => (
+                                                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={uk}>
+                                                                <DatePicker
+                                                                    {...field}
+                                                                    label="Дата атестації"
+                                                                    format="dd.MM.yyyy"
+                                                                    slotProps={{
+                                                                        textField: {
+                                                                            fullWidth: true,
+                                                                        },
+                                                                    }}
+                                                                    value={field.value ? new Date(field.value) : null}
+                                                                    onChange={(date) => field.onChange(date)}
+                                                                />
+                                                            </LocalizationProvider>
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6}>
+                                                    <Controller
+                                                        name={`doctor_data.specialities.${index}.valid_to_date`}
+                                                        control={control}
+                                                        rules={{ required: "Дата дії до обов'язкова" }}
+                                                        render={({ field }) => (
+                                                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={uk}>
+                                                                <DatePicker
+                                                                    {...field}
+                                                                    label="Дійсно до"
+                                                                    format="dd.MM.yyyy"
+                                                                    slotProps={{
+                                                                        textField: {
+                                                                            fullWidth: true,
+                                                                        },
+                                                                    }}
+                                                                    value={field.value ? new Date(field.value) : null}
+                                                                    onChange={(date) => field.onChange(date)}
+                                                                />
+                                                            </LocalizationProvider>
                                                         )}
                                                     />
                                                 </Grid>
@@ -1181,7 +1298,6 @@ const DoctorDashboard = () => {
     );
 };
 
-// Add missing state for reject reason
 const DoctorDashboardWithState = () => {
 
 

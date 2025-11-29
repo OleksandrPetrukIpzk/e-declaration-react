@@ -21,7 +21,7 @@ export const CreateUser = () => {
             email: email,
             password: password,
             role: UserType[selectedValue],
-        }).then(() => navigate('/home')).catch(err => setError('This user is exist'));
+        }).then(() => navigate('/home')).catch(err => setError('Користувач з таким email вже існує'));
     }
     useEffect(() => {
         if(user){
@@ -31,22 +31,22 @@ export const CreateUser = () => {
     return (<>
         <div className="login-main">
             <div className="login-main-text">
-                <h1>Register</h1>
-                <h2>Please enter your Name, Login and your Password, and choose your role</h2>
+                <h1>Реєстрація</h1>
+                <h2>Будь ласка, введіть ваше ім'я, email і пароль, а також оберіть вашу роль</h2>
             </div>
             <div className="login-main-form">
-                <FormInputComponent placeholder={'What are you name?'} value={login} setValue={setLogin} type={'text'}/>
-                <FormInputComponent placeholder={'Email'} value={email} setValue={setEmail} type={'email'}/>
-                <FormInputComponent placeholder={'Password'} value={password} setValue={setPassword} type={'password'}/>
+                <FormInputComponent placeholder={'Як ваше ім\'\'я?'} value={login} setValue={setLogin} type={'text'}/>
+                <FormInputComponent placeholder={'Пошта'} value={email} setValue={setEmail} type={'email'}/>
+                <FormInputComponent placeholder={'Пароль'} value={password} setValue={setPassword} type={'password'}/>
                 <div className={'login-main-form-role'}>
-                    <h3>Who are you?</h3>
+                    <h3>Хто ви?</h3>
                     <ChooseYourRoleComponent setSelectedValue={setSelectedValue} selectedValue={selectedValue}/>
                 </div>
                 <div className={'login-main-form-button'}>
                     <Button className={'login-main-form-button-login'} color={'success'} variant={'solid'}
-                            onClick={() => createUser()}>Register</Button>
+                            onClick={() => createUser()}>Зареєструватися</Button>
                     <p className='error'>{error}</p>
-                    <span>Do you have account <a href={'/login'}>Login!</a></span>
+                    <span>У вас вже є акаунт? <a href={'/login'}>Увійти!</a></span>
                 </div>
             </div>
         </div>

@@ -29,7 +29,6 @@ import {
     AccountBalance as AccountBalanceIcon,
 } from '@mui/icons-material';
 
-// Типи
 interface Phone {
     type: string;
     number: string;

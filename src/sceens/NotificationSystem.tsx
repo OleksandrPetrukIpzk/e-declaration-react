@@ -30,12 +30,14 @@ import {NotificationsList} from "../components/notification/NotificationsList";
 import {SendMessageDialog} from "../components/notification/SendMessageDialog";
 import {HeaderUserInfo} from "../features/HeaderUserInfo";
 import {LandingScreenHeader} from "../components/LandingScreenHeader";
+import {declarationDaoService} from "../services/declarationDaoService";
 export const NotificationSystem = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [userNotifications, setUserNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [connections, setConnections] = useState<UserType[]>([]);
     const [clinics, setClinics] = useState<ClinicType[]>([]);
+    const [doctors, setDoctors] = useState<UserType[]>([]);
     const [showNotifications, setShowNotifications] = useState(false);
     const [showSendDialog, setShowSendDialog] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -57,14 +59,13 @@ export const NotificationSystem = () => {
 
     const { connect, disconnect, on, off, isConnected } = useWebSocket(user?.id ?? 0);
 
-    // Завантажити дані при запуску
     useEffect(() => {
         loadNotifications();
         loadUserNotifications();
         loadConnections();
         loadClinics();
+        loadDoctors();
 
-        // Підключення до WebSocket
         connect();
 
         return () => {
@@ -72,7 +73,6 @@ export const NotificationSystem = () => {
         };
     }, []);
 
-    // WebSocket слухачі
     useEffect(() => {
         if (isConnected) {
             on('new_notification', (notification: Notification) => {
@@ -190,7 +190,6 @@ export const NotificationSystem = () => {
 
     const loadConnections = async () => {
         try {
-            console.log(user?.connections);
             setConnections(user?.connections ?? []);
         } catch (error) {
             console.error('Error loading connections:', error);
@@ -203,6 +202,23 @@ export const NotificationSystem = () => {
             setClinics(user?.clinic || []);
         } catch (error) {
             console.error('Error loading clinics:', error);
+        }
+    };
+
+    const loadDoctors = async () => {
+        try {
+            const declarations = await declarationDaoService.getPatientDeclarations();
+
+            const uniqueDoctors = new Map<number, UserType>();
+            declarations.forEach((declaration: any) => {
+                if (declaration.doctor && (declaration.status === 'active' || declaration.status === 'inactive')) {
+                    uniqueDoctors.set(declaration.doctor.id, declaration.doctor);
+                }
+            });
+
+            setDoctors(Array.from(uniqueDoctors.values()));
+        } catch (error) {
+            console.error('Error loading doctors:', error);
         }
     };
 
@@ -405,6 +421,7 @@ export const NotificationSystem = () => {
                 onClose={() => setShowSendDialog(false)}
                 connections={connections}
                 clinics={clinics}
+                doctors={doctors}
                 onSend={handleSendMessage}
             />
 

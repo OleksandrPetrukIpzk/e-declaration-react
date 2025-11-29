@@ -1,4 +1,3 @@
-// DivisionManagement.tsx
 import React, { useState, useEffect } from 'react';
 import {
     Box,
@@ -28,7 +27,6 @@ const DivisionManagement: React.FC = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [divisionToDelete, setDivisionToDelete] = useState<Division | undefined>();
 
-    // Стани для повідомлень
     const [snackbar, setSnackbar] = useState<{
         open: boolean;
         message: string;
@@ -39,7 +37,6 @@ const DivisionManagement: React.FC = () => {
         severity: 'success',
     });
 
-    // Завантаження дивізій при монтуванні компоненту
     useEffect(() => {
         loadDivisions();
     }, []);

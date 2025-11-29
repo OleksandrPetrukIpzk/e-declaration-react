@@ -1,11 +1,9 @@
 import {
     Notifications as NotificationsIcon,
-    Send as SendIcon,
     MarkEmailRead as ReadIcon,
     Person as PersonIcon,
     Business as BusinessIcon,
     Message as MessageIcon,
-    Refresh as RefreshIcon
 } from '@mui/icons-material';
 import {Avatar, Box, Button, Chip, CircularProgress,
     Divider,
@@ -117,6 +115,9 @@ export const NotificationsList = ({
                                         </Typography>
                                         <Typography variant="caption" color="text.secondary" display="block">
                                             Від: {notification.sender.firstName} {notification.sender.lastName} ({notification.sender.email})
+                                        </Typography>
+                                        <Typography variant="caption" color="text.secondary" display="block">
+                                            Для: {notification.recipient.firstName} {notification.recipient.lastName} ({notification.recipient.email})
                                         </Typography>
                                         {notification.relatedClinic && (
                                             <Typography variant="caption" color="text.secondary" display="block">

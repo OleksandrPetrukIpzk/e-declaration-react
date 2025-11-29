@@ -44,16 +44,16 @@ export const EditClinicForm = () => {
             onSubmit={handleSubmit(onSubmit)}
             sx={{ maxWidth: 500, mx: 'auto', mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
         >
-            <Typography variant="h5">Edit Clinic</Typography>
+            <Typography variant="h5">Редагувати клініку</Typography>
 
             <Controller
                 name="clinicName"
                 control={control}
-                rules={{ required: 'Clinic name is required' }}
+                rules={{ required: 'Назва клініки обов\'язкова' }}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Name"
+                        label="Назва клініки"
                         error={!!errors.clinicName}
                         helperText={errors.clinicName?.message}
                         fullWidth
@@ -64,11 +64,11 @@ export const EditClinicForm = () => {
             <Controller
                 name="clinicAddress"
                 control={control}
-                rules={{ required: 'Clinic address is required' }}
+                rules={{ required: 'Адреса клініки обов\'язкова' }}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Address"
+                        label="Адреса клініки"
                         error={!!errors.clinicAddress}
                         helperText={errors.clinicAddress?.message}
                         fullWidth
@@ -82,7 +82,7 @@ export const EditClinicForm = () => {
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Bio"
+                        label="Опис клініки"
                         multiline
                         rows={4}
                         fullWidth
@@ -96,13 +96,13 @@ export const EditClinicForm = () => {
                 render={({ field }) => (
                     <FormControlLabel
                         control={<Switch {...field} checked={field.value ?? false} />}
-                        label="Is Active"
+                        label="Активна"
                     />
                 )}
             />
 
             <Button type="submit" variant="contained" color="primary">
-                Save Changes
+                Зберегти зміни
             </Button>
         </Box>
         </>

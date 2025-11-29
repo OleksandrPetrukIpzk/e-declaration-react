@@ -34,11 +34,11 @@ export const CreateClinicForm = () => {
             <Controller
                 name="clinicName"
                 control={control}
-                rules={{ required: 'Clinic name is required' }}
+                rules={{ required: 'Назва клініки обов\'язкова' }}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Name"
+                        label="Назва клініки"
                         error={!!errors.clinicName}
                         helperText={errors.clinicName?.message}
                         fullWidth
@@ -49,11 +49,11 @@ export const CreateClinicForm = () => {
             <Controller
                 name="clinicAddress"
                 control={control}
-                rules={{ required: 'Clinic address is required' }}
+                rules={{ required: 'Адреса клініки обов\'язкова' }}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Address"
+                        label="Адреса клініки"
                         error={!!errors.clinicAddress}
                         helperText={errors.clinicAddress?.message}
                         fullWidth
@@ -67,7 +67,7 @@ export const CreateClinicForm = () => {
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        label="Clinic Bio (optional)"
+                        label="Опис клініки (необов'язково)"
                         multiline
                         rows={4}
                         fullWidth
@@ -76,7 +76,7 @@ export const CreateClinicForm = () => {
             />
 
             <Button type="submit" variant="contained" color="primary">
-                Create Clinic
+                Створити клініку
             </Button>
         </Box>
         </>

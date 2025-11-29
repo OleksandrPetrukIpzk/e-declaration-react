@@ -14,11 +14,9 @@ import {
 import LegalEntityView from "../components/legalEntity/LegalEntityView";
 import LegalEntityForm from "../components/legalEntity/LegalEntityForm";
 import LegalEntityList from "../components/legalEntity/LegalEntityList";
-import {BASE_URL} from "../constants/urls";
 import {legalEntityDaoService} from "../services/legalEntityDaoService";
 import {LandingScreenHeader} from "../components/LandingScreenHeader";
 
-// Типи
 interface Phone {
     type: string;
     number: string;
@@ -81,7 +79,6 @@ const LegalEntityManager: React.FC = () => {
         entity: null
     });
 
-    // Показ уведомлення
     const showNotification = (message: string, severity: NotificationState['severity'] = 'success') => {
         setNotification({ open: true, message, severity });
     };
@@ -90,7 +87,6 @@ const LegalEntityManager: React.FC = () => {
         setNotification(prev => ({ ...prev, open: false }));
     };
 
-    // Обробники для списку
     const handleCreate = () => {
         setSelectedEntity(null);
         setViewMode('create');
@@ -134,7 +130,6 @@ const LegalEntityManager: React.FC = () => {
         setSelectedEntity(null);
     };
 
-    // Обробники для перегляду
     const handleViewEdit = () => {
         setViewMode('edit');
     };
@@ -163,14 +158,13 @@ const LegalEntityManager: React.FC = () => {
             setViewMode('list');
             setSelectedEntity(null);
         } catch (error) {
-            throw error; // Передаємо помилку назад до форми
+            throw error;
         }
     };
     const handleCancelDelete = () => {
         setDeleteDialog({ open: false, entity: null });
     };
 
-    // Рендер контенту на основі режиму
     const renderContent = () => {
         switch (viewMode) {
             case 'list':

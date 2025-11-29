@@ -52,6 +52,12 @@ export const declarationDaoService = {
         if (!response.ok) throw new Error('Failed to terminate declaration');
         return response.json();
     },
+
+    async getPatientDeclarations() {
+        const response = await api.get('/declarations/patient/my');
+        if (!response.data) throw new Error('Failed to fetch patient declarations');
+        return response.data;
+    },
 };
 
 export const downloadDeclarationPdf = async (declarationId: string) => {
@@ -63,27 +69,21 @@ export const downloadDeclarationPdf = async (declarationId: string) => {
         console.log('Response data type:', typeof response.data);
         console.log('Response data size:', response.data.size);
         console.log('Content-Type:', response.headers['content-type']);
-        // ВАЖЛИВО: Явно вказуємо тип для blob
         const blob = new Blob([response.data], {
             type: 'application/pdf'
         });
 
-        // Створюємо URL
         const url = window.URL.createObjectURL(blob);
 
-        // Створюємо та клікаємо посилання
         const link = document.createElement('a');
         link.href = url;
         link.download = `declaration-${declarationId}.pdf`;
 
-        // Важливо: додаємо до DOM перед кліком
         document.body.appendChild(link);
         link.click();
 
-        // Прибираємо з DOM
         document.body.removeChild(link);
 
-        // Звільняємо пам'ять
         window.URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Помилка завантаження PDF:', error);
@@ -96,13 +96,10 @@ export const previewDeclarationPdf = async (declarationId: string) => {
             responseType: 'blob',
         });
 
-        // Створюємо URL для перегляду
         const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
 
-        // Відкриваємо у новій вкладці
         window.open(url, '_blank');
 
-        // Прибираємо URL через деякий час
         setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch (error) {
         console.error('Помилка перегляду PDF:', error);

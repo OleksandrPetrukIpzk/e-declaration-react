@@ -40,17 +40,14 @@ import {
     Home,
     ContactEmergency,
     Description,
-    Email,
     ChevronRight,
     ChevronLeft,
 } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { uk } from 'date-fns/locale';
-import {LandingScreenHeader} from "../components/LandingScreenHeader";
 import api from "../constants/axiosInterceptor";
 
-// Enums from DTO
 enum DeclarationScope {
     family_doctor = 'Сімейний лікар',
     pediatrician = 'Педіатр',
@@ -94,7 +91,6 @@ enum StreetType {
     SQUARE = 'Площа',
 }
 
-// Mock data for doctors
 const mockDoctors = [
     {
         email: 'doctor1@clinic.com',
@@ -139,7 +135,6 @@ const PatientDeclarationForm = () => {
             setDoctors(doctorsData);
         } catch (error) {
             console.error('Error fetching doctors:', error);
-            // Показати помилку користувачу
         } finally {
             setLoadingDoctors(false);
         }
@@ -157,12 +152,10 @@ const PatientDeclarationForm = () => {
         watch,
     } = useForm({
         defaultValues: {
-            // Basic declaration info
             doctor_email: '',
             scope: 'family_doctor',
-            declaration_request_id: '', // Will be generated on backend
+            declaration_request_id: '',
 
-            // Only patient personal data - doctor will fill the rest
             person_data: {
                 first_name: '',
                 last_name: '',
@@ -215,7 +208,6 @@ const PatientDeclarationForm = () => {
         'Підтвердження'
     ];
 
-    // Field arrays for dynamic fields
     const { fields: phoneFields, append: appendPhone, remove: removePhone } = useFieldArray({
         control,
         name: "person_data.phones"
@@ -240,7 +232,7 @@ const PatientDeclarationForm = () => {
         let fieldsToValidate: any = [];
 
         switch (activeStep) {
-            case 0: // Personal data
+            case 0:
                 fieldsToValidate = [
                     'person_data.first_name',
                     'person_data.last_name',
@@ -252,13 +244,13 @@ const PatientDeclarationForm = () => {
                     'person_data.birth_country'
                 ];
                 break;
-            case 1: // Documents
+            case 1:
                 fieldsToValidate = ['person_data.documents'];
                 break;
-            case 2: // Address
+            case 2:
                 fieldsToValidate = ['person_data.addresses'];
                 break;
-            case 3: // Contacts
+            case 3:
                 fieldsToValidate = [
                     'person_data.phones',
                     'person_data.emergency_contact.first_name',
@@ -266,7 +258,7 @@ const PatientDeclarationForm = () => {
                     'person_data.emergency_contact.phones'
                 ];
                 break;
-            case 4: // Doctor selection
+            case 4:
                 fieldsToValidate = [
                     'doctor_email',
                     'scope'
@@ -288,12 +280,9 @@ const PatientDeclarationForm = () => {
         setIsSubmitting(true);
 
         try {
-            // Generate UUID for declaration_request_id (in real app this would be from backend)
             data.declaration_request_id = crypto.randomUUID();
 
             console.log('Submitting patient declaration:', data);
-
-            // NEW API call to patient endpoint
             const result = await api.post('declarations/patient/create', data).then(result => result.data);
 
 
@@ -317,7 +306,7 @@ const PatientDeclarationForm = () => {
 
     const renderStepContent = (step: any) => {
         switch (step) {
-            case 0: // Personal data
+            case 0:
                 return (
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -492,7 +481,7 @@ const PatientDeclarationForm = () => {
                     </Grid>
                 );
 
-            case 1: // Documents
+            case 1:
                 return (
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -649,7 +638,7 @@ const PatientDeclarationForm = () => {
                     </Grid>
                 );
 
-            case 2: // Address (same implementation as before)
+            case 2:
                 return (
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -911,7 +900,7 @@ const PatientDeclarationForm = () => {
                     </Grid>
                 );
 
-            case 3: // Contacts
+            case 3:
                 return (
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -1135,7 +1124,7 @@ const PatientDeclarationForm = () => {
                     </Grid>
                 );
 
-            case 4: // Doctor selection - SIMPLIFIED
+            case 4:
                 return (
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -1182,7 +1171,7 @@ const PatientDeclarationForm = () => {
                                 render={({ field }) => (
                                     <Autocomplete
                                         {...field}
-                                        options={doctors} // замість mockDoctors
+                                        options={doctors}
                                         loading={loadingDoctors}
                                         getOptionLabel={(option: any) =>
                                             typeof option === 'string'
@@ -1242,7 +1231,7 @@ const PatientDeclarationForm = () => {
                     </Grid>
                 );
 
-            case 5: // Confirmation - SIMPLIFIED
+            case 5:
                 const formData = getValues();
                 const selectedDoctor = mockDoctors.find(d => d.email === formData.doctor_email);
 

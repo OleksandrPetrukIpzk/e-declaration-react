@@ -43,6 +43,10 @@ const getActiveClinics = async () => {
     const data = await api.get('clinic/get-active').then((response) => response.data);
     return data;
 }
+const leaveClinic = async (clinicId: number) => {
+    const data = await api.post('clinic/leave', {clinicId}).then((response) => response.data);
+    return data;
+}
 export const ClinicDaoService = {
     create,
     getClinics,
@@ -54,5 +58,6 @@ export const ClinicDaoService = {
     getAllInvites,
     getActiveClinics,
     joinToClinicAsWorker,
-    getAllClinics
+    getAllClinics,
+    leaveClinic
 }

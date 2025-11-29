@@ -1,4 +1,3 @@
-// DivisionTable.tsx
 import React from 'react';
 import {
     Table,
@@ -12,7 +11,7 @@ import {
     Chip,
     Typography,
     Box,
-    Tooltip, MenuItem,
+    Tooltip,
 } from '@mui/material';
 import {
     Edit as EditIcon,

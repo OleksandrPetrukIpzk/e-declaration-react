@@ -111,7 +111,6 @@ const DivisionForm: React.FC<DivisionFormProps> = ({
                                             fullWidth
                                             label="Назва дивізії"
                                             error={!!errors.name}
-                                            // helperText={errors.name?.message}
                                         />
                                     )}
                                 />
@@ -128,7 +127,6 @@ const DivisionForm: React.FC<DivisionFormProps> = ({
                                             fullWidth
                                             label="DLS ID"
                                             error={!!errors.dls_id}
-                                            // helperText={errors.dls_id?.message}
                                         />
                                     )}
                                 />

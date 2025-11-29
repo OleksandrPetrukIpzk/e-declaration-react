@@ -1,6 +1,5 @@
 
 export const LandingFooter = () => {
-    //@todo add href
     return <footer className="landing-screen-footer">
         <div className="landing-screen-footer-text">
             <h4>E-Declaration</h4>

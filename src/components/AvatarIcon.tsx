@@ -17,7 +17,6 @@ const getRandomColor = () => {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
 };
-// @todo can add colors
 
 export const AvatarIcon = ({ firstName, lastName, size = 40 }: InitialsAvatarProps) => {
     const initials = `${firstName ? firstName[0] : ''}${lastName ? lastName[0] : ''}`.toUpperCase();

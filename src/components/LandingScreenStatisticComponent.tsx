@@ -1,7 +1,6 @@
 import {StatisticBlockComponent} from "./StatisticBlockComponent";
 
 export const LandingScreenStatisticComponent = () => {
-    //@todo add statistic from backend
     return <div className={'landing-screen-services'}>
         <div className={'landing-screen-services-block'}>
             <h3>Stats For Medical Courier</h3>

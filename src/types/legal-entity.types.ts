@@ -1,6 +1,3 @@
-// Типи та енуми для модуля юридичних осіб
-
-// Основні енуми
 export enum PhoneType {
     MOBILE = 'mobile',
     LAND_LINE = 'landline',
@@ -22,17 +19,16 @@ export enum EntityStatus {
 }
 
 export enum LegalForm {
-    TOV = 'ТОВ', // Товариство з обмеженою відповідальністю
-    PAT = 'ПАТ', // Публічне акціонерне товариство
-    PRAT = 'ПрАТ', // Приватне акціонерне товариство
-    KT = 'КТ', // Командитне товариство
-    PP = 'ПП', // Повне товариство
-    FOP = 'ФОП', // Фізична особа-підприємець
-    NP = 'НП', // Неприбуткова організація
-    BF = 'БФ', // Благодійний фонд
+    TOV = 'ТОВ',
+    PAT = 'ПАТ',
+    PRAT = 'ПрАТ',
+    KT = 'КТ',
+    PP = 'ПП',
+    FOP = 'ФОП',
+    NP = 'НП',
+    BF = 'БФ',
 }
 
-// Основні інтерфейси
 export interface Phone {
     type: PhoneType | string;
     number: string;
@@ -53,7 +49,6 @@ export interface Address {
     zip: string;
 }
 
-// Основна модель юридичної особи
 export interface LegalEntity {
     id: string;
     name: string;
@@ -69,7 +64,6 @@ export interface LegalEntity {
     updated_at: string;
 }
 
-// DTO для створення
 export interface CreateLegalEntityDto {
     name: string;
     short_name: string;
@@ -82,7 +76,6 @@ export interface CreateLegalEntityDto {
     addresses: Address[];
 }
 
-// DTO для оновлення (всі поля опціональні)
 export interface UpdateLegalEntityDto {
     name?: string;
     short_name?: string;
@@ -95,7 +88,6 @@ export interface UpdateLegalEntityDto {
     addresses?: Address[];
 }
 
-// DTO для пошуку
 export interface LegalEntitySearchDto {
     name?: string;
     edrpou?: string;
@@ -104,7 +96,6 @@ export interface LegalEntitySearchDto {
     legal_form?: string;
 }
 
-// Типи для форм
 export interface LegalEntityFormData {
     name: string;
     short_name: string;
@@ -117,7 +108,6 @@ export interface LegalEntityFormData {
     addresses: Address[];
 }
 
-// Валідаційні схеми та правила
 export interface ValidationErrors {
     [key: string]: string | ValidationErrors;
 }
@@ -135,7 +125,6 @@ export interface AddressValidationRule {
     message: string;
 }
 
-// API типи
 export interface ApiResponse<T> {
     data: T;
     message?: string;
@@ -157,7 +146,6 @@ export interface PaginatedResponse<T> {
     totalPages: number;
 }
 
-// Компонентні типи
 export interface LegalEntityListProps {
     onEdit: (entity: LegalEntity) => void;
     onCreate: () => void;
@@ -177,7 +165,6 @@ export interface LegalEntityViewProps {
     onBack: () => void;
 }
 
-// Стани UI
 export type ViewMode = 'list' | 'create' | 'edit' | 'view';
 
 export interface NotificationState {
@@ -191,7 +178,6 @@ export interface DeleteDialogState {
     entity: LegalEntity | null;
 }
 
-// Типи для фільтрів та сортування
 export interface FilterState {
     search: string;
     status: EntityStatus | '';
@@ -210,7 +196,6 @@ export interface SortState {
     direction: SortDirection;
 }
 
-// Конфігураційні типи
 export interface LegalEntityConfig {
     apiBaseUrl: string;
     itemsPerPage: number;
@@ -220,11 +205,9 @@ export interface LegalEntityConfig {
     addressFormats: Record<string, string[]>;
 }
 
-// Утилітарні типи
 export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>;
 export type OptionalFields<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-// Специфічні типи для healthcare контексту
 export interface HealthcareProvider extends LegalEntity {
     license_number?: string;
     license_expiry?: string;
@@ -240,7 +223,6 @@ export interface MedicalFacility extends LegalEntity {
     imaging_services?: boolean;
 }
 
-// Константи для UI
 export const PHONE_TYPE_LABELS: Record<PhoneType, string> = {
     [PhoneType.MOBILE]: 'Мобільний',
     [PhoneType.LAND_LINE]: 'Стаціонарний',
@@ -269,7 +251,6 @@ export const STATUS_COLORS: Record<EntityStatus, 'default' | 'primary' | 'second
     [EntityStatus.NEW]: 'info',
 };
 
-// Валідаційні правила
 export const VALIDATION_RULES = {
     edrpou: {
         pattern: /^\d{8}$/,

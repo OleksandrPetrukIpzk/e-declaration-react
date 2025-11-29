@@ -23,6 +23,9 @@ import LegalEntityManager from "./sceens/LegalEntityManager";
 import DoctorDashboardWithState from "./sceens/DoctorDashboard";
 import {ConnectedUserList} from "./sceens/ConnectedUserList";
 import {NotificationSystem} from "./sceens/NotificationSystem";
+import {AnalyticsDashboard} from "./sceens/AnalyticsDashboard";
+import {DetailedAnalytics} from "./sceens/DetailedAnalytics";
+import PatientDeclarationsList from "./sceens/PatientDeclarationsList";
 
 function App() {
 
@@ -114,11 +117,19 @@ function App() {
     {
       path: '/notifications',
       element: <NotificationSystem />,
+    },
+    {
+      path: '/analytics',
+      element: <AnalyticsDashboard />,
+    },
+    {
+      path: '/analytics/detailed',
+      element: <DetailedAnalytics />,
+    },
+    {
+      path: '/patient-declarations',
+      element: <PatientDeclarationsList />,
     }
-    // {
-    //   path: "/test",
-    //   element: <TestPage />,
-    // }
   ]);
 
   return (

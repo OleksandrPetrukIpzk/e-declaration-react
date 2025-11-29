@@ -2,7 +2,6 @@ import api from "../constants/axiosInterceptor";
 
 export const notificationAPI = {
     async getNotifications(limit = 20, offset = 0) {
-        // Замініть на ваш api instance
         const response = await api.get(`/notifications?limit=${limit}&offset=${offset}`);
         return response.data;
     },

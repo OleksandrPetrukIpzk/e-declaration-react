@@ -3,7 +3,7 @@ import {Card, CardContent, Typography} from "@mui/material";
 export const StatsCard = ({ title, value, color = 'primary' }: {
     title: string;
     value: number;
-    color?: 'primary' | 'success' | 'warning' | 'error';
+    color?: 'primary' | 'success' | 'warning' | 'error' | 'info';
 }) => {
     return (
         <Card sx={{ height: '100%' }}>
